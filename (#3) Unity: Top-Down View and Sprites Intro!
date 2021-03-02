@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerMovement : MonoBehaviour
+{
+    // For Movement
+    [SerializeField] [Range(0f, 10f)] private float movementSpeed = 6f; // initializing my movement speed for player, but you can change that to whatever you want it to be
+    [SerializeField] private float horizontal, vertical; // defining our horizontal and vertical directions to store player input for which directions to move horizontally and vertically
+    [SerializeField] private Vector3 vectorMovement; // stores the movement of our player on the x, y, and z, but z will default to 0 as we are only working with 2 dimensions
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Reading the horizontal input from player
+        horizontal = Input.GetAxisRaw("Horizontal"); // moving right returns a +1, and moving left returns a -1 
+        vertical = Input.GetAxisRaw("Vertical"); // moving up returns a +1, and moving down returns a -1
+
+        // We sort our horizontal and vertical movement into a Vector3 type variable, which stores our displacement in the respective x, y, and z
+        vectorMovement = new Vector3(horizontal, vertical, 0f).normalized; // normalized prevents the player from being able to move faster when pressing two movement keys down
+    }
+
+    void FixedUpdate()
+    {
+        // Position of the player is now changing with respect to player input and movement speed 
+        transform.position += vectorMovement * movementSpeed * Time.fixedDeltaTime;
+    }
+}
